@@ -7,7 +7,7 @@
 # is usually a priority over speed in CI environments. Using a fresh
 # runtime for each build is more reliable since the runtime is completely
 # isolated from any previous builds.
-image: eclipse-temurin:17.0.7_7-jdk-windowsservercore-1809
+image: eclipse-temurin:17.0.7_7-jdk
 
 stages:
   - build
