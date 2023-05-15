@@ -24,7 +24,7 @@ build:
       - /^release\/.*$/
       - tags
   script:
-    - ./gradlew.bat --build-cache clean assemble createInstaller
+    - ./gradlew --build-cache clean assemble createInstaller
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: push
