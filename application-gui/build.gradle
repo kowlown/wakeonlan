@@ -1,0 +1,126 @@
+plugins {
+    id 'java'
+    id 'distribution'
+    id 'org.springframework.boot' version '2.6.2'
+    id 'io.spring.dependency-management'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
+    id 'org.beryx.runtime' version '1.12.7'
+    id "edu.sc.seis.launch4j" version "2.5.3"
+}
+
+jar {
+    //noinspection GroovyAssignabilityCheck
+    manifest {
+        attributes 'Main-Class': 'com.mystnihon.wakeonlan.WakeOnLanGui'
+    }
+}
+javafx {
+    version = '15'
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.swing']
+}
+runtime {
+    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    modules = [
+        'java.desktop',
+        'jdk.unsupported.desktop',
+        'java.datatransfer',
+        'java.xml',
+        'jdk.unsupported',
+        'java.scripting',
+        'jdk.jfr',
+
+
+        'java.management',
+        'java.scripting',
+        'java.prefs',
+        'jdk.xml.dom',
+        'jdk.security.jgss', //!IMPORTANT  It's not suggested but we need it
+        'java.instrument',
+    ]
+}
+repositories {
+    mavenCentral()
+    maven { url "https://clojars.org/repo/" }
+}
+
+dependencies {
+    implementation project(':common')
+    implementation project(':nitrite-data:annotation')
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation('org.dizitart:nitrite:3.4.4') {
+        exclude module: 'jsr250-api'
+    }
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.3'
+    implementation 'net.synedra:validatorfx:0.3.1'
+    implementation 'commons-validator:commons-validator:1.7'
+    implementation 'net.sf.image4j:image4j:0.7zensight1'
+    platform(implementation 'org.kordamp.ikonli:ikonli-bom:12.3.1')
+    implementation 'org.kordamp.ikonli:ikonli-javafx'
+    implementation 'org.kordamp.ikonli:ikonli-fontawesome5-pack'
+    implementation 'com.jfoenix:jfoenix:9.0.10'
+    implementation 'org.controlsfx:controlsfx:11.1.1'
+
+    compileOnly 'org.projectlombok:lombok'
+
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor project(':nitrite-data:processor')
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+def applicationJarFile = 'application-gui-' + version + '.jar'
+launch4j {
+    headerType = 'gui' //    headerType = 'console'
+    outfile = "$applicationName" + '.exe'
+    icon = "${rootDir}/divers/wakeonlan.ico"
+    dontWrapJar = true
+    jar applicationJarFile
+    jreMinVersion = "11.0.0"
+    bundledJrePath = "runtime"
+    bundledJre64Bit = true
+    jvmOptions = ['--add-opens=javafx.controls/com.sun.javafx.scene.control.behavior=ALL-UNNAMED',
+                  '--add-opens=javafx.controls/com.sun.javafx.scene.control=ALL-UNNAMED',
+                  '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
+}
+distributions {
+    app {
+        contents {
+            from(project(':application-gui').tasks.getByName('bootJar')) {
+                include '*.jar'
+            }
+            from(project(':application-gui').tasks.getByName('createExe')) {
+                duplicatesStrategy DuplicatesStrategy.EXCLUDE
+                include '*.exe'
+            }
+            from(project(':application-gui').tasks.getByName('jre')) {
+                into 'runtime'
+            }
+        }
+    }
+}
+
+tasks.register('createInstaller') {
+    dependsOn('installAppDist')
+    group = 'build'
+    description = 'Create an installer'
+    doFirst {
+        exec {
+            workingDir '.'
+            commandLine 'docker-compose', '-f', 'setup/docker-compose-setup.yml', 'up', 'build-app'
+            environment('APPLICATION_VERSION', version)
+        }
+    }
+    doLast {
+        copy {
+            from('./setup/Output')
+            into("$buildDir/installer")
+        }
+        delete('./setup/Output')
+    }
+
+}

@@ -1,0 +1,18 @@
+version: '3.2'
+
+services:
+  build-app:
+    image: amake/innosetup
+    volumes:
+      - type: bind
+        source: '.'
+        target: '/work/setup'
+      - type: bind
+        source: '../build/install'
+        target: '/work/build/install'
+    command:
+      - 'setup/server.iss'
+    environment:
+      - "APPLICATION_VERSION=${APPLICATION_VERSION}"
+
+

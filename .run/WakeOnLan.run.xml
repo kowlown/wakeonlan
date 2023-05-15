@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="WakeOnLan" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="wakeonlan.application.main" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.mystnihon.wakeonlan.WakeOnLanConsole" />
+    <option name="PROGRAM_PARAMETERS" value="home.mystnihon.com 80:38:FB:65:A9:73" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
