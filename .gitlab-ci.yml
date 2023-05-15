@@ -24,6 +24,7 @@ build:
       - /^release\/.*$/
       - tags
   script:
+    - chmod +x ./gradlew
     - ./gradlew --build-cache clean assemble createInstaller
   cache:
     key: "$CI_COMMIT_REF_NAME"

@@ -48,6 +48,7 @@ public class MainController extends VBox implements Initializable, HistoryEntryC
     private static final String PREF_KEY_MAC = "mac";
     private static final String PREF_KEY_PORT = "port";
     private static final int DELAY_BEFORE_LABEL_CLEANING = 10;
+    public static final String RESOURCE_FILENAME = "strings";
     private final Validator validator = new Validator();
     private final PropertyComponent propertyComponent;
     private final HistoryService historyService;
@@ -74,7 +75,7 @@ public class MainController extends VBox implements Initializable, HistoryEntryC
         this.historyService = historyService;
         executor = Executors.newScheduledThreadPool(10);
         wakeOnLan = new WakeOnLan();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/scenes/main.fxml"), ResourceBundle.getBundle("strings"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/scenes/main.fxml"), ResourceBundle.getBundle(RESOURCE_FILENAME));
         fxmlLoader.setControllerFactory(param -> this);
         fxmlLoader.setRoot(this);
         try {
@@ -117,7 +118,8 @@ public class MainController extends VBox implements Initializable, HistoryEntryC
     public void onDelete(WakeupHistoryCollection wakeupHistoryCollection) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         IconUtil.setIcon(alert);
-        alert.setContentText(ResourceBundle.getBundle("strings", Locale.getDefault()).getString("dialog.deletion"));
+        alert.setHeaderText(null);
+        alert.setContentText(ResourceBundle.getBundle(RESOURCE_FILENAME, Locale.getDefault()).getString("dialog.deletion"));
         alert.showAndWait().ifPresent(buttonType -> {
             if (buttonType.equals(ButtonType.OK)) {
                 delete(wakeupHistoryCollection);
@@ -168,7 +170,7 @@ public class MainController extends VBox implements Initializable, HistoryEntryC
     }
 
     private String getText(String key) {
-        return ResourceBundle.getBundle("strings").getString(key);
+        return ResourceBundle.getBundle(RESOURCE_FILENAME).getString(key);
     }
 
     private void refresh() {
