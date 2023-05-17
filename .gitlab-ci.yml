@@ -64,4 +64,4 @@ createInstaller:
   artifacts:
     name: ${CI_COMMIT_REF_SLUG}-${CI_JOB_NAME}
     paths:
-      - application-gui/build/installer
+      - application-gui/setup/Output
