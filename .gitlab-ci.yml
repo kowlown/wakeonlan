@@ -54,7 +54,8 @@ createInstaller:
   script:
     - chmod +x ./gradlew
     # - ./gradlew --build-cache createInstaller
-    - docker-compose -f ./application-gui/setup/docker-compose-setup.yml up build-app
+    - cd ./application-gui
+    - docker-compose -f ./setup/docker-compose-setup.yml up build-app
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: push
