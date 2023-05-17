@@ -16,6 +16,7 @@ public class WakeupHistoryCollection implements Serializable {
 
     @Id
     private UUID documentId;
+    private String label;
     private String host;
     private String macAddress;
     private int port;

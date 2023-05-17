@@ -20,6 +20,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionModel;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +50,8 @@ public class MainController extends VBox implements Initializable, HistoryEntryC
     private static final String PREF_KEY_PORT = "port";
     private static final int DELAY_BEFORE_LABEL_CLEANING = 10;
     public static final String RESOURCE_FILENAME = "strings";
+    private static final int SIMPLE_CLICK = 1;
+    private static final int DOUBLE_CLICK = 2;
     private final Validator validator = new Validator();
     private final PropertyComponent propertyComponent;
     private final HistoryService historyService;
@@ -162,11 +165,28 @@ public class MainController extends VBox implements Initializable, HistoryEntryC
 
     @FXML
     public void handleListHistorySelection(MouseEvent ignored) {
-        Optional.ofNullable(listViewHistory.getSelectionModel()).map(SelectionModel::getSelectedItem).ifPresent(wakeupHistoryCollection -> {
-            hostOrIpAddress.setText(wakeupHistoryCollection.getHost());
-            macAddress.setText(wakeupHistoryCollection.getMacAddress());
-            port.setText(String.valueOf(wakeupHistoryCollection.getPort()));
-        });
+        if (SIMPLE_CLICK == ignored.getClickCount()) {
+            Optional.ofNullable(listViewHistory.getSelectionModel()).map(SelectionModel::getSelectedItem).ifPresent(wakeupHistoryCollection -> {
+                hostOrIpAddress.setText(wakeupHistoryCollection.getHost());
+                macAddress.setText(wakeupHistoryCollection.getMacAddress());
+                port.setText(String.valueOf(wakeupHistoryCollection.getPort()));
+            });
+        }
+        if (DOUBLE_CLICK == ignored.getClickCount()) {
+            //Rename
+            Optional.ofNullable(listViewHistory.getSelectionModel()).map(SelectionModel::getSelectedItem).ifPresent(wakeupHistoryCollection -> {
+                TextInputDialog textInputDialog = new TextInputDialog(wakeupHistoryCollection.getLabel());
+                textInputDialog.setContentText(getText("message.add.label"));
+                textInputDialog.setHeaderText(null);
+                textInputDialog.showAndWait().ifPresent(name -> {
+                    wakeupHistoryCollection.setLabel(name);
+                    historyService.insertOrUpdate(wakeupHistoryCollection, false);
+                    listViewHistory.refresh();
+                });
+            });
+
+        }
+
     }
 
     private String getText(String key) {
@@ -191,7 +211,7 @@ public class MainController extends VBox implements Initializable, HistoryEntryC
         propertyComponent.setValueFor(PREF_KEY_HOST, hostOrIpAddressText);
         propertyComponent.setValueFor(PREF_KEY_MAC, macAddressTextext);
         propertyComponent.setValueFor(PREF_KEY_PORT, portIfBlank);
-        historyService.insert(new WakeupHistoryCollection(hostOrIpAddressText, macAddressTextext, portIfBlank));
+        historyService.insertOrUpdate(new WakeupHistoryCollection(hostOrIpAddressText, macAddressTextext, portIfBlank), true);
     }
 
     private void readPreferenceValues() {

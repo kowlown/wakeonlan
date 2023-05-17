@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.net.URL;
 import java.time.ZoneId;
@@ -26,7 +27,13 @@ public class HistoryEntryController implements Initializable {
 
     public void setValue(WakeupHistoryCollection item) {
         this.item = item;
-        ipAddress.setText(item.getHost().concat(":").concat(String.valueOf(item.getPort())));
+        String ipInfo = item.getHost().concat(" : ").concat(String.valueOf(item.getPort()));
+
+        if (StringUtils.isNotBlank(item.getLabel())) {
+            ipAddress.setText(item.getLabel() + " (" + ipInfo + ")");
+        } else {
+            ipAddress.setText(ipInfo);
+        }
         macAddress.setText(item.getMacAddress());
         date.setText(item.getOffsetDateTime().atZoneSameInstant(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("EEE dd MM yyyy HH:mm")));
     }
