@@ -7,16 +7,47 @@
 # is usually a priority over speed in CI environments. Using a fresh
 # runtime for each build is more reliable since the runtime is completely
 # isolated from any previous builds.
+image: gradle:7.5.1-jdk17
+
 stages:
   - build
   - package
+  - createInstaller
+
+cache:
+  key: ${CI_PROJECT_NAME}
+  paths:
+    - .m2/repository
 
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
 build:
-  image: eclipse-temurin:17.0.7_7-jdk
   stage: build
+  tags:
+    - docker
+  only:
+    refs:
+      - master
+      - /^release\/.*$/
+      - tags
+  script:
+    - gradle --build-cache clean assemble
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: push
+    paths:
+      - .gradle
+      - application-gui/build
+      - application/build
+      - common/build
+      - nitrite-data/annotation/build
+      - nitrite-data/processor/build
+
+package:
+  stage: package
+  dependencies:
+    - build
   tags:
     - docker
   only:
@@ -24,13 +55,7 @@ build:
       - /^release\/.*$/
       - tags
   script:
-    - chmod +x ./gradlew
-    - ./gradlew --build-cache clean assemble installAppDist
-  cache:
-    key: "$CI_COMMIT_REF_NAME"
-    policy: push
-    paths:
-      - .gradle
+    - gradle --build-cache installAppDist
   artifacts:
     name: ${CI_COMMIT_REF_SLUG}-${CI_JOB_NAME}
     paths:
@@ -42,9 +67,9 @@ createInstaller:
   image: docker:latest
   services:
     - docker:dind
-  stage: package
+  stage: createInstaller
   dependencies:
-    - build
+    - package
   tags:
     - docker
   only:
@@ -52,15 +77,8 @@ createInstaller:
       - /^release\/.*$/
       - tags
   script:
-    - chmod +x ./gradlew
-    # - ./gradlew --build-cache createInstaller
     - cd ./application-gui
     - docker-compose -f ./setup/docker-compose-setup.yml up build-app
-  cache:
-    key: "$CI_COMMIT_REF_NAME"
-    policy: push
-    paths:
-      - .gradle
   artifacts:
     name: ${CI_COMMIT_REF_SLUG}-${CI_JOB_NAME}
     paths:
