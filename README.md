@@ -19,13 +19,18 @@ So there was a need, I fixed it. It's not online, because I don't want to pay fo
 <!-- END BADGIE TIME -->
 
 ## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+![Main screen](./docs/img.png "Application")
+![Main screen](./docs/img_1.png "Application")
 
 ## Installation
 I will provide a zip and an installer in the future
 
 ## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+- Type the host or ip address of your machine. If you have NAT and behind a router type the host or external ip visible for the router.
+- Type the MAC address of the machine that you want to wake-up. 
+- Wake-On-Lan must be enabled for the machine. If you have a router, allow it to redirect the wake-on-lan packet.
+I don't provide documentation nor help on how to do it. You'll have to invoke your Google-Fu.
+- By default, the Wake-On-Lan magick packet (a special UDP/IP packet) is sent to the port 9. But you can change the port if you have configured another port.
 
 ## Support
 If you have an issue you can create a ticket on the issue board of the project : https://gitlab.com/kowlown/wakeonlan/-/issues
