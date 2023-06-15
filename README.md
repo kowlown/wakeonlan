@@ -10,6 +10,8 @@ So there was a need, I fixed it. It's not online, because I don't want to pay fo
 ![Number of issues](https://img.shields.io/gitlab/issues/open/46034018 "Issues")
 ![Type of License](https://img.shields.io/gitlab/license/46034018 "License")
 ![Release badge](https://img.shields.io/gitlab/v/release/46034018 "Release")
+![Last commit](https://img.shields.io/gitlab/last-commit/46034018 "Last commit")
+![Maintenance](https://img.shields.io/maintenance/yes/2023 "Maintained")
 <!-- BADGIE TIME -->
 
 [![pipeline status](https://img.shields.io/gitlab/pipeline-status/kowlown/nitrite-modelgen?branch=master)](https://gitlab.com/kowlown/nitrite-modelgen/-/commits/master)
