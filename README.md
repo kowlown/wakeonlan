@@ -33,7 +33,7 @@ I don't provide documentation nor help on how to do it. You'll have to invoke yo
 - By default, the Wake-On-Lan magick packet (a special UDP/IP packet) is sent to the port 9. But you can change the port if you have configured another port.
 
 ## Support
-If you have an issue you can create a ticket on the issue board of the project : https://gitlab.com/kowlown/wakeonlan/-/issues
+If you have an issue you can create a ticket on the issue board of the project : [Issues](https://gitlab.com/kowlown/wakeonlan/-/issues)
 
 ## Roadmap
 I consider the project as complete since it is doing its job. Thus, I have no Roadmap. If you have an idea, you can create an issue, and we may discuss it.
