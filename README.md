@@ -33,9 +33,11 @@ If you have an issue you can create a ticket on the issue board of the project :
 ## Roadmap
 I consider the project as complete since it is doing its job. Thus, I have no Roadmap. If you have an idea, you can create an issue, and we may discuss it.
 
-## License
-For open source projects, say how it is licensed.
-
 ## Project status
 
-OnGoing
+![http://ForTheBadge.com/images/badges/built-with-love.svg](http://ForTheBadge.com/images/badges/built-with-love.svg)
+
+![https://img.shields.io/badge/IntelliJ_IDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white](https://img.shields.io/badge/IntelliJ_IDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)
+
+![Maintenance](https://img.shields.io/maintenance/yes/2023 "Maintained")
+
