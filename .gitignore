@@ -133,3 +133,4 @@ cache/
 /docker/influxdb/meta/
 /docker/influxdb/wal/
 /local.db
+/application.properties
