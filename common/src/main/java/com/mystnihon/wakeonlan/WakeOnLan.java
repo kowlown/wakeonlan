@@ -9,7 +9,9 @@ import java.net.InetAddress;
 import static com.mystnihon.wakeonlan.utils.MacUtils.getMacBytes;
 
 @Slf4j
-public class WakeOnLan {
+public class WakeOnLan implements IWakeOnLan{
+
+    @Override
     public boolean sendPacket(String ipAddress, String macAddress, int port) {
         try {
             byte[] macBytes = getMacBytes(macAddress);

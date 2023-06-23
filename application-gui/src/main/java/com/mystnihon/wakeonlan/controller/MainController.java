@@ -1,7 +1,7 @@
 package com.mystnihon.wakeonlan.controller;
 
+import com.mystnihon.wakeonlan.IWakeOnLan;
 import com.mystnihon.wakeonlan.PropertyComponent;
-import com.mystnihon.wakeonlan.WakeOnLan;
 import com.mystnihon.wakeonlan.annotations.SceneController;
 import com.mystnihon.wakeonlan.controller.listcells.HistoryEntryCell;
 import com.mystnihon.wakeonlan.controller.listcells.HistoryEntryCellActionListener;
@@ -55,7 +55,7 @@ public class MainController extends VBox implements Initializable, HistoryEntryC
     private final Validator validator = new Validator();
     private final PropertyComponent propertyComponent;
     private final HistoryService historyService;
-    private final WakeOnLan wakeOnLan;
+    private final IWakeOnLan wakeOnLan;
     private final InetAddressValidator inetAddressValidator = InetAddressValidator.getInstance();
     private final DomainValidator domainValidator = DomainValidator.getInstance();
     private final RegexValidator macValidator = new RegexValidator("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})|([0-9a-fA-F]{4}\\\\.[0-9a-fA-F]{4}\\\\.[0-9a-fA-F]{4})$", false);
@@ -73,11 +73,11 @@ public class MainController extends VBox implements Initializable, HistoryEntryC
     @FXML
     private StatusBar labelStatus;
 
-    public MainController(PropertyComponent propertyComponent, HistoryService historyService) {
+    public MainController(PropertyComponent propertyComponent, HistoryService historyService, IWakeOnLan wakeOnLan) {
         this.propertyComponent = propertyComponent;
         this.historyService = historyService;
+        this.wakeOnLan = wakeOnLan;
         executor = Executors.newScheduledThreadPool(10);
-        wakeOnLan = new WakeOnLan();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/scenes/main.fxml"), ResourceBundle.getBundle(RESOURCE_FILENAME));
         fxmlLoader.setControllerFactory(param -> this);
         fxmlLoader.setRoot(this);
