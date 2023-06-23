@@ -94,7 +94,7 @@ public class MainController extends VBox implements Initializable, HistoryEntryC
             .dependsOn(HOST, hostOrIpAddress.textProperty())
             .withMethod(c -> {
                 String hostname = c.get(HOST);
-                if (!(inetAddressValidator.isValid(hostname) || domainValidator.isValid(hostname))) {
+                if (hostname == null || !(inetAddressValidator.isValid(hostname) || domainValidator.isValid(hostname))) {
                     c.error(getText("message.error.invalid.host"));
                 }
             })
@@ -104,7 +104,7 @@ public class MainController extends VBox implements Initializable, HistoryEntryC
             .dependsOn("mac", macAddress.textProperty())
             .withMethod(c -> {
                 String mac = c.get("mac");
-                if (!(macValidator.isValid(mac))) {
+                if (mac == null || !(macValidator.isValid(mac))) {
                     c.error(getText("message.error.invalid.mac"));
                 }
             })
