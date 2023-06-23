@@ -40,7 +40,7 @@
             </BorderPane>
         </GridPane>
 
-        <Button onAction="#handleWake" text="%button.validate" />
+        <Button fx:id="btnValidation" onAction="#handleWake" text="%button.validate" />
         <ListView fx:id="listViewHistory" maxHeight="1.7976931348623157E308" minHeight="200.0" onMouseClicked="#handleListHistorySelection" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
         <padding>
             <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />

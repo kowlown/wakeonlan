@@ -67,6 +67,7 @@ dependencies {
     annotationProcessor project(':nitrite-data:processor')
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.testfx:testfx-junit:4.0+'
 }
 
 test {
